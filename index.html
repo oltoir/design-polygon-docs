@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дизайн-полигоны и Polygon Launcher — обзор</title>
+<meta name="description" content="Единый источник правды о том, как мы устроили работу дизайнера и фронтендера через Claude Code.">
+<link rel="stylesheet" href="./assets/styles.css">
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <a href="./index.html" class="brand">
+      <span class="brand-mark">P</span>
+      <span>Polygon Docs</span>
+    </a>
+
+    <div class="nav-section-title">Разделы</div>
+    <nav class="nav">
+      <a href="./index.html" class="active">
+        <span>🌐</span> Обзор
+      </a>
+      <a href="./designers.html">
+        <span>🎨</span> Гайд для дизайнера
+      </a>
+      <a href="./developers.html">
+        <span>⚙️</span> Гайд для разработчика
+      </a>
+    </nav>
+
+    <div class="nav-section-title">На этой странице</div>
+    <nav class="toc">
+      <a href="#why" class="toc-h2">Что это и зачем</a>
+      <a href="#ecosystem" class="toc-h2">Экосистема</a>
+      <a href="#pipeline" class="toc-h2">Pipeline</a>
+      <a href="#metrics" class="toc-h2">Экономия времени</a>
+      <a href="#launcher" class="toc-h2">Polygon Launcher</a>
+      <a href="#authors" class="toc-h2">Авторы</a>
+    </nav>
+
+    <div class="nav-section-title">Контакт</div>
+    <nav class="nav">
+      <a href="https://t.me/oltoir" target="_blank" rel="noopener">
+        <span>✈️</span> Telegram @oltoir
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ============ CONTENT ============ -->
+  <main class="content">
+
+    <section class="hero">
+      <span class="badge badge--brand"><span class="badge-dot"></span> MVP · в активной обкатке</span>
+      <h1>Дизайн-полигоны и&nbsp;Polygon Launcher</h1>
+      <p class="hero-lead">
+        Новый формат работы дизайнера и&nbsp;фронтендера на&nbsp;базе Claude Code:
+        дизайнер собирает продакшн-готовую верстку в&nbsp;песочнице, разработчик переносит её
+        в&nbsp;боевой проект. Универсальный подход для любого фронтенд-стека.
+      </p>
+      <div class="hero-meta">
+        <span class="badge">React / Vue / Svelte</span>
+        <span class="badge">Claude Sonnet 4.6 · Opus 4.7</span>
+        <span class="badge">Tailwind · FSD · 4px-grid</span>
+      </div>
+      <div class="hero-meta" style="margin-top: 24px;">
+        <a class="btn btn--primary" href="./designers.html">🎨 Начать как дизайнер</a>
+        <a class="btn" href="./developers.html">⚙️ Поднять полигон под свой проект</a>
+      </div>
+    </section>
+
+    <!-- ============ WHY ============ -->
+    <section id="why">
+      <h2>Что это и&nbsp;зачем</h2>
+      <p>
+        Идея в&nbsp;одном предложении: дизайнер собирает верстку <strong>напрямую в&nbsp;коде</strong>
+        с&nbsp;помощью Claude в&nbsp;специально подготовленной песочнице
+        — «дизайн-полигоне», — а&nbsp;разработчик переносит готовое в&nbsp;продакшн,
+        минуя ручную перепечатку из&nbsp;Figma в&nbsp;JSX/Vue.
+      </p>
+
+      <div class="grid grid--3">
+        <div class="card card--accent">
+          <h4>📦 Меньше дублирования</h4>
+          <p>Один артефакт вместо «Figma + код». Дизайнер сразу видит результат в&nbsp;браузере и&nbsp;итерирует.</p>
+        </div>
+        <div class="card card--accent">
+          <h4>🎯 Согласованность токенов</h4>
+          <p>Запрет дефолтных Tailwind-цветов и&nbsp;произвольного spacing&nbsp;— на&nbsp;уровне инфраструктуры.</p>
+        </div>
+        <div class="card card--accent">
+          <h4>⚡ Разгрузка фронта</h4>
+          <p>70% монотонной верстки уходит в&nbsp;полигон. Фронт занимается логикой, API, перформансом.</p>
+        </div>
+      </div>
+
+      <div class="callout callout--info">
+        <span class="callout-icon">💡</span>
+        <div class="callout-body">
+          <p><strong>Почему именно в 2026.</strong> Claude (Sonnet 4.6 / Opus 4.7) при правильно
+          подготовленном контексте — <code>.claude/rules</code>, агенты, hooks — стабильно собирает
+          верстку по конвенциям команды. Это не «иногда получается», это рабочий инженерный процесс.
+          Дизайнер без технических навыков пишет продакшн-готовый код через диалог на&nbsp;русском.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ECOSYSTEM DIAGRAM ============ -->
+    <section id="ecosystem">
+      <h2>Экосистема: четыре уровня</h2>
+      <p>Каждый уровень делает одну задачу. Чёткие границы&nbsp;— ключ к&nbsp;тому, что это вообще работает.</p>
+
+      <svg viewBox="0 0 880 420" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; margin: 24px 0;">
+        <defs>
+          <linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#5b8def" stop-opacity="0.18"/>
+            <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.06"/>
+          </linearGradient>
+          <linearGradient id="claudeGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#f472b6" stop-opacity="0.18"/>
+            <stop offset="100%" stop-color="#fb923c" stop-opacity="0.06"/>
+          </linearGradient>
+          <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L8,3 L0,6 z" fill="#9aa4b2"/>
+          </marker>
+        </defs>
+
+        <!-- Layer 1: Production -->
+        <g>
+          <rect x="40" y="20" width="800" height="80" rx="12" fill="url(#brandGrad)" stroke="#283242" stroke-width="1"/>
+          <text x="60" y="48" fill="#e6edf3" font-size="16" font-weight="600" font-family="Inter, sans-serif">1. Production-репозитории</text>
+          <text x="60" y="70" fill="#9aa4b2" font-size="13" font-family="Inter, sans-serif">Боевой код: API, store, router, тесты. Сюда уезжает готовая верстка из полигона.</text>
+          <text x="60" y="88" fill="#6e7787" font-size="11" font-family="JetBrains Mono, monospace">aviax · choco-mini-apps · booking-app · …</text>
+        </g>
+
+        <!-- Arrow up: transfer -->
+        <line x1="440" y1="100" x2="440" y2="135" stroke="#9aa4b2" stroke-width="2" marker-end="url(#arrow)"/>
+        <text x="455" y="125" fill="#6e7787" font-size="11" font-family="Inter, sans-serif">перенос через Claude</text>
+
+        <!-- Layer 2: Polygon -->
+        <g>
+          <rect x="40" y="140" width="800" height="130" rx="12" fill="url(#claudeGrad)" stroke="#283242" stroke-width="1"/>
+          <text x="60" y="168" fill="#e6edf3" font-size="16" font-weight="600" font-family="Inter, sans-serif">2. Дизайн-полигон (git-репо)</text>
+          <text x="60" y="188" fill="#9aa4b2" font-size="13" font-family="Inter, sans-serif">Изолированная песочница: тот же стек, та же архитектура — но без API, store, бизнес-логики.</text>
+
+          <!-- .claude folder -->
+          <rect x="60" y="204" width="760" height="50" rx="8" fill="#11161f" stroke="#3a4655" stroke-width="1"/>
+          <text x="80" y="226" fill="#5b8def" font-size="13" font-weight="600" font-family="JetBrains Mono, monospace">.claude/</text>
+          <text x="80" y="244" fill="#6e7787" font-size="11" font-family="Inter, sans-serif">rules · agents · commands · hooks · decisions · docs — мозг полигона, заставляет Claude писать по конвенциям</text>
+        </g>
+
+        <!-- Arrow up: work via UI -->
+        <line x1="440" y1="270" x2="440" y2="305" stroke="#9aa4b2" stroke-width="2" marker-end="url(#arrow)"/>
+        <text x="455" y="295" fill="#6e7787" font-size="11" font-family="Inter, sans-serif">работа через GUI</text>
+
+        <!-- Layer 3: Launcher -->
+        <g>
+          <rect x="40" y="310" width="800" height="90" rx="12" fill="url(#brandGrad)" stroke="#283242" stroke-width="1"/>
+          <text x="60" y="338" fill="#e6edf3" font-size="16" font-weight="600" font-family="Inter, sans-serif">3. Polygon Launcher (Electron-приложение)</text>
+          <text x="60" y="360" fill="#9aa4b2" font-size="13" font-family="Inter, sans-serif">Чат с Claude · превью dev-сервера с device-эмуляцией · git-операции · выбор модели и effort</text>
+          <rect x="60" y="370" width="120" height="20" rx="4" fill="#1d2533"/>
+          <text x="120" y="384" fill="#9aa4b2" font-size="10" text-anchor="middle" font-family="Inter, sans-serif">Sidebar</text>
+          <rect x="195" y="370" width="370" height="20" rx="4" fill="#1d2533"/>
+          <text x="380" y="384" fill="#9aa4b2" font-size="10" text-anchor="middle" font-family="Inter, sans-serif">Preview (device-эмуляция)</text>
+          <rect x="580" y="370" width="240" height="20" rx="4" fill="#1d2533"/>
+          <text x="700" y="384" fill="#9aa4b2" font-size="10" text-anchor="middle" font-family="Inter, sans-serif">Chat / Git / Logs / Overview</text>
+        </g>
+      </svg>
+
+      <p style="margin-top: 32px;"><strong>Стек для каждого уровня:</strong></p>
+      <table>
+        <thead>
+          <tr><th>Уровень</th><th>Технологии (пример)</th><th>Что делает</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Production</td><td>React / Vue · TS · TanStack Query · Zustand · Router</td><td>Боевой код с реальными данными</td></tr>
+          <tr><td>Дизайн-полигон</td><td>React / Vue · TS · Vite · Tailwind · FSD</td><td>Только верстка по мокам</td></tr>
+          <tr><td><code>.claude/</code></td><td>rules.md · hooks.py · agents · commands · ADR</td><td>Правила и автоматизация для Claude</td></tr>
+          <tr><td>Polygon Launcher</td><td>Electron · React · Agent SDK · simple-git</td><td>GUI без терминала</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ============ PIPELINE ============ -->
+    <section id="pipeline">
+      <h2>Pipeline за&nbsp;30 секунд</h2>
+      <p>От задумки дизайнера до&nbsp;production-деплоя&nbsp;— шесть стадий, единый процесс.</p>
+
+      <div class="pipeline">
+        <div class="pipeline-step">
+          <div class="pipeline-step-num">01 · Дизайнер</div>
+          <div class="pipeline-step-title">/make-template в Чате</div>
+          <div class="pipeline-step-detail">Claude уточняет, дизайнер подтверждает summary</div>
+        </div>
+        <div class="pipeline-step">
+          <div class="pipeline-step-num">02 · Дизайнер</div>
+          <div class="pipeline-step-title">Верстка + Preview</div>
+          <div class="pipeline-step-detail">Итерации в живом dev-сервере, проверка mobile/desktop</div>
+        </div>
+        <div class="pipeline-step">
+          <div class="pipeline-step-num">03 · Дизайнер</div>
+          <div class="pipeline-step-title">Commit · Push · PR</div>
+          <div class="pipeline-step-detail">Git-панель без терминала, PR на GitHub</div>
+        </div>
+        <div class="pipeline-step">
+          <div class="pipeline-step-num">04 · Разработчик</div>
+          <div class="pipeline-step-title">Код-ревью PR</div>
+          <div class="pipeline-step-detail">Чек-лист: FSD, токены, нет API/store</div>
+        </div>
+        <div class="pipeline-step">
+          <div class="pipeline-step-num">05 · Разработчик</div>
+          <div class="pipeline-step-title">Перенос в production</div>
+          <div class="pipeline-step-detail">Claude переносит, подключает API/store/i18n</div>
+        </div>
+        <div class="pipeline-step">
+          <div class="pipeline-step-num">06 · Команда</div>
+          <div class="pipeline-step-title">Ревью → деплой</div>
+          <div class="pipeline-step-detail">Стандартный процесс команды, мерж в main</div>
+        </div>
+      </div>
+
+      <p style="font-size: 14px; color: var(--text-tertiary); margin-top: 16px;">
+        Подробное описание каждого этапа с&nbsp;чек-листами&nbsp;—
+        в&nbsp;<a href="./developers.html#pipeline">гайде для разработчиков</a>
+        и&nbsp;<a href="./designers.html">гайде для дизайнеров</a>.
+      </p>
+    </section>
+
+    <!-- ============ METRICS ============ -->
+    <section id="metrics">
+      <h2>Сколько экономит</h2>
+      <p>Цифры по&nbsp;типовым widget-задачам в&nbsp;реальных продуктовых командах.</p>
+
+      <div class="grid grid--4">
+        <div class="stat">
+          <div class="stat-value">6–10×</div>
+          <div class="stat-label">ускорение на типовом виджете</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">70%</div>
+          <div class="stat-label">монотонной верстки уходит из задач фронта</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">30 мин</div>
+          <div class="stat-label">средняя сборка widget'а вместо 6 часов</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">1–2 дня</div>
+          <div class="stat-label">одноразовая инвестиция в настройку полигона</div>
+        </div>
+      </div>
+
+      <h3 style="margin-top: 32px;">Время на типовые задачи</h3>
+      <table>
+        <thead>
+          <tr><th>Задача</th><th>До</th><th>После</th><th>Δ</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Карточка отеля / товара / билета</td>
+            <td>4–8&nbsp;ч фронта</td>
+            <td>30&nbsp;мин дизайнера + 50&nbsp;мин ревью+перенос</td>
+            <td><span class="badge badge--success">−75%</span></td>
+          </tr>
+          <tr>
+            <td>Форма поиска / фильтр</td>
+            <td>6–10&nbsp;ч фронта</td>
+            <td>1&nbsp;ч дизайнера + 1&nbsp;ч ревью+перенос</td>
+            <td><span class="badge badge--success">−75%</span></td>
+          </tr>
+          <tr>
+            <td>Попап / шторка</td>
+            <td>2–4&nbsp;ч фронта</td>
+            <td>25&nbsp;мин дизайнера + 30&nbsp;мин ревью+перенос</td>
+            <td><span class="badge badge--success">−70%</span></td>
+          </tr>
+          <tr>
+            <td>Filter chips group</td>
+            <td>3–4&nbsp;ч фронта</td>
+            <td>30&nbsp;мин дизайнера + 35&nbsp;мин ревью+перенос</td>
+            <td><span class="badge badge--success">−70%</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout--success">
+        <span class="callout-icon">⚡</span>
+        <div class="callout-body">
+          <p><strong>Что фронт делает с&nbsp;освободившимся временем:</strong>
+          бизнес-логика, перформанс, архитектура, нестандартные интеракции, E2E-тесты, менторинг.
+          Всё то, где он действительно нужен.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ LAUNCHER STATUS ============ -->
+    <section id="launcher">
+      <h2>Polygon Launcher: статус и&nbsp;контакты</h2>
+
+      <div class="callout callout--warning">
+        <span class="callout-icon">🚧</span>
+        <div class="callout-body">
+          <p><strong>Активная обкатка / MVP.</strong> Ключевые фичи работают,
+          собирается обратная связь, идут следующие фазы. Можно и&nbsp;нужно пользоваться,
+          можно и&nbsp;нужно сообщать о&nbsp;багах.</p>
+        </div>
+      </div>
+
+      <img class="screenshot" src="./assets/screenshots/01-main-window.png" alt="Главное окно Polygon Launcher">
+      <p class="caption">Главное окно Polygon Launcher с&nbsp;двумя зарегистрированными полигонами (Aviax, Freedom Miniapp)</p>
+
+      <div class="grid grid--2">
+        <div class="card card--success">
+          <h4>✅ Что уже работает</h4>
+          <ul>
+            <li>Чат с Claude через @anthropic-ai/claude-agent-sdk</li>
+            <li>Превью dev-сервера с 22 device-пресетами</li>
+            <li>Git-панель: status, branches, switch, commit, push</li>
+            <li>Slash-палитра <code>/make-template</code> и&nbsp;другие</li>
+            <li>Drag-n-drop Figma-скринов в&nbsp;чат</li>
+            <li>Markdown-рендер с подсветкой кода</li>
+            <li>Выбор модели и&nbsp;effort (Sonnet/Opus/Haiku × low–max)</li>
+            <li>Контекст и&nbsp;rate-limits в&nbsp;statusbar</li>
+            <li>Auto-update через GitHub Releases</li>
+          </ul>
+        </div>
+        <div class="card card--warning">
+          <h4>🚧 В работе</h4>
+          <ul>
+            <li>UI-визард для&nbsp;добавления полигона</li>
+            <li>Worktree-изоляция параллельных чатов</li>
+            <li>AI-генерация commit-сообщений</li>
+            <li>Расширение списка встроенных полигонов</li>
+            <li>macOS-нотаризация и&nbsp;Windows code-signing</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Связь</h3>
+      <div class="card">
+        <p style="margin: 0;">
+          <strong>Все вопросы по&nbsp;лаунчеру, баги, фичреквесты →</strong>
+          <a href="https://t.me/oltoir" target="_blank" rel="noopener">Telegram @oltoir</a>
+        </p>
+        <p style="margin: 8px 0 0;">
+          Релизы:
+          <a href="https://github.com/oltoir/polygon-launcher/releases" target="_blank" rel="noopener">
+            github.com/oltoir/polygon-launcher/releases</a>
+        </p>
+        <p style="margin: 8px 0 0;">
+          📦 <strong>Нужны исходники лаунчера</strong> (форк под свой стек, контрибьют, кастомизация) → пиши
+          <a href="https://t.me/oltoir" target="_blank" rel="noopener">Telegram @oltoir</a>,
+          доступ к&nbsp;репозиторию выдам.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ AUTHORS ============ -->
+    <section id="authors">
+      <h2>Авторы формата</h2>
+      <div class="grid grid--2">
+        <div class="card">
+          <div class="author">
+            <div class="author-avatar">АЖ</div>
+            <div>
+              <div class="author-name">Жансеитов Альтаир</div>
+              <div class="author-role">Frontend Engineer · Telegram @oltoir</div>
+            </div>
+          </div>
+          <p style="margin: 16px 0 0;">Архитектура дизайн-полигонов,
+          <code>.claude/</code>-инфраструктура, Polygon Launcher.</p>
+        </div>
+        <div class="card">
+          <div class="author">
+            <div class="author-avatar" style="background: linear-gradient(135deg, #f472b6, #fb923c);">НЕ</div>
+            <div>
+              <div class="author-name">Ескендир Нурсила</div>
+              <div class="author-role">Designer</div>
+            </div>
+          </div>
+          <p style="margin: 16px 0 0;">Концепция работы дизайнера с&nbsp;Claude,
+          дизайн-токены, UX-верификация компонентов в&nbsp;полигоне.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="footer">
+      <p>
+        <strong>Дальше →</strong>
+        <a href="./designers.html">Гайд для дизайнера</a> ·
+        <a href="./developers.html">Гайд для разработчика</a>
+      </p>
+      <p style="margin-top: 16px;">
+        Сквозной пример во&nbsp;всех документах&nbsp;— <strong>booking-app</strong>
+        (React + TypeScript + Tailwind + Zustand).
+      </p>
+    </footer>
+
+  </main>
+</div>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">🌙</button>
+
+<script>
+  const root = document.documentElement;
+  const toggle = document.getElementById('themeToggle');
+  const saved = localStorage.getItem('polygon-docs-theme');
+  if (saved) { root.setAttribute('data-theme', saved); toggle.textContent = saved === 'light' ? '☀️' : '🌙'; }
+  toggle.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    root.setAttribute('data-theme', next);
+    toggle.textContent = next === 'light' ? '☀️' : '🌙';
+    localStorage.setItem('polygon-docs-theme', next);
+  });
+</script>
+
+</body>
+</html>

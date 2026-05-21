@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Гайд для дизайнеров — Polygon Docs</title>
+<meta name="description" content="Пошаговая инструкция: установить инструменты, открыть полигон в лаунчере, собрать первый компонент через Claude.">
+<link rel="stylesheet" href="./assets/styles.css">
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <a href="./index.html" class="brand">
+      <span class="brand-mark">P</span>
+      <span>Polygon Docs</span>
+    </a>
+
+    <div class="nav-section-title">Разделы</div>
+    <nav class="nav">
+      <a href="./index.html"><span>🌐</span> Обзор</a>
+      <a href="./designers.html" class="active"><span>🎨</span> Гайд для дизайнера</a>
+      <a href="./developers.html"><span>⚙️</span> Гайд для разработчика</a>
+    </nav>
+
+    <div class="nav-section-title">На этой странице</div>
+    <nav class="toc">
+      <a href="#promise">Что ты получишь</a>
+      <a href="#why">Зачем дизайнеру код</a>
+      <a href="#install">Установка инструментов</a>
+      <a href="#launcher">Первый запуск лаунчера</a>
+      <a href="#first-component">Первый компонент</a>
+      <a href="#checklist">Чек-лист перед ревью</a>
+      <a href="#ai-scope">Что делает ИИ</a>
+      <a href="#shortcuts">Команды и&nbsp;клавиши</a>
+      <a href="#troubleshoot">Если сломалось</a>
+      <a href="#contact">Контакты</a>
+    </nav>
+
+    <div class="nav-section-title">Контакт</div>
+    <nav class="nav">
+      <a href="https://t.me/oltoir" target="_blank" rel="noopener">
+        <span>✈️</span> Telegram @oltoir
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ============ CONTENT ============ -->
+  <main class="content">
+
+    <section class="hero">
+      <span class="badge">🎨 Для дизайнеров</span>
+      <h1>Работаем&nbsp;в Polygon&nbsp;Launcher</h1>
+      <p class="hero-lead">
+        Установить инструменты, открыть полигон в&nbsp;лаунчере, собрать первый компонент
+        через&nbsp;Claude и&nbsp;передать разработчику. <strong>Базовые навыки терминала не&nbsp;нужны.</strong>
+      </p>
+    </section>
+
+    <!-- ============ PROMISE ============ -->
+    <section id="promise">
+      <h2>Что ты получишь после этой инструкции</h2>
+      <div class="grid grid--2">
+        <div class="card card--accent">
+          <h4>🛠 Установленные инструменты</h4>
+          <p>Claude Code и&nbsp;Polygon Launcher на&nbsp;твоей машине. Один раз&nbsp;— и&nbsp;забыл.</p>
+        </div>
+        <div class="card card--accent">
+          <h4>🖥 Графический интерфейс</h4>
+          <p>Терминал не&nbsp;нужен. Всё в&nbsp;одном окне: чат, превью, git, dev-сервер.</p>
+        </div>
+        <div class="card card--accent">
+          <h4>⏱ Скорость 30–60 минут</h4>
+          <p>Собрать продакшн-готовый widget и&nbsp;передать разработчику.</p>
+        </div>
+        <div class="card card--accent">
+          <h4>📏 Понимание границ</h4>
+          <p>Что ИИ делает за&nbsp;тебя, а&nbsp;что остаётся работой фронта.</p>
+        </div>
+      </div>
+
+      <div class="callout callout--info">
+        <span class="callout-icon">📘</span>
+        <div class="callout-body">
+          <p>Если ты&nbsp;раньше не&nbsp;открывал терминал&nbsp;— ничего страшного. Шаги ниже
+          расписаны так, что нужно <strong>только копировать команды и&nbsp;нажимать Enter</strong>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WHY ============ -->
+    <section id="why">
+      <h2>Зачем дизайнеру писать код в&nbsp;2026</h2>
+      <p>
+        Раньше дизайнер делал макет в&nbsp;Figma, фронт переписывал его в&nbsp;код.
+        На&nbsp;карточку уходило 4–8&nbsp;часов плюс несколько раундов синхронизации.
+      </p>
+      <p>
+        <strong>Сейчас всё иначе.</strong> Claude при правильно подготовленном контексте
+        стабильно собирает верстку по&nbsp;правилам команды. Дизайн-полигон&nbsp;— это
+        и&nbsp;есть подготовленный контекст.
+      </p>
+
+      <h3>Что это значит для&nbsp;тебя</h3>
+      <div class="grid grid--2">
+        <div class="card">
+          <h4>💬 Диалог на&nbsp;русском</h4>
+          <p>Продакшн-готовый код через разговор. Никакого «учить программирование»&nbsp;—
+          нужно только чётко описывать визуальные требования.</p>
+        </div>
+        <div class="card">
+          <h4>👁 Живое превью</h4>
+          <p>Видишь результат в&nbsp;браузере и&nbsp;итерируешь. Без ожидания фронта.</p>
+        </div>
+        <div class="card">
+          <h4>🔄 Один артефакт</h4>
+          <p>Перестаёшь синхронизировать Figma и&nbsp;код. Артефакт один.</p>
+        </div>
+        <div class="card">
+          <h4>⚡ Разгрузка фронта</h4>
+          <p>Фронт занимается логикой и&nbsp;перформансом. Каждый делает то, в&nbsp;чём силён.</p>
+        </div>
+      </div>
+
+      <div class="callout callout--success">
+        <span class="callout-icon">💪</span>
+        <div class="callout-body">
+          <p>Это не&nbsp;«дизайнер заменяет фронта». Это новый формат работы, в&nbsp;котором
+          <strong>каждый занимается своей сильной стороной</strong>: ты&nbsp;— визуальной частью,
+          фронт&nbsp;— инженерной.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ INSTALL ============ -->
+    <section id="install">
+      <h2>Что нужно установить (один&nbsp;раз, ~30&nbsp;минут)</h2>
+
+      <div class="steps">
+        <!-- 1 NODE -->
+        <div class="step">
+          <div class="step-num">1</div>
+          <h3>Node.js (через nvm)</h3>
+          <p>Node&nbsp;— это среда, в&nbsp;которой запускаются современные веб-проекты.</p>
+
+          <h4>macOS / Linux</h4>
+          <p>Открой Terminal (на&nbsp;Mac: <kbd>⌘</kbd>+<kbd>Space</kbd> → «Terminal» → <kbd>Enter</kbd>):</p>
+          <div class="code-block">
+            <div class="code-block-header"><span>bash</span><span>установка nvm</span></div>
+<pre><code>curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash</code></pre>
+          </div>
+          <p><strong>Закрой Terminal и&nbsp;открой заново</strong> — иначе nvm не&nbsp;«подхватится».</p>
+          <div class="code-block">
+            <div class="code-block-header"><span>bash</span><span>установка Node LTS</span></div>
+<pre><code>nvm install --lts
+nvm use --lts
+node -v</code></pre>
+          </div>
+          <p>Должен показать что-то вроде <code>v22.12.0</code>.</p>
+
+          <h4>Windows</h4>
+          <ol>
+            <li>Зайди на&nbsp;<a href="https://nodejs.org/" target="_blank" rel="noopener">nodejs.org</a></li>
+            <li>Скачай LTS-версию (зелёная плашка «Recommended for Most Users»)</li>
+            <li>Запусти установщик, нажимай Next до&nbsp;конца</li>
+            <li>В&nbsp;PowerShell проверь: <code>node -v</code></li>
+          </ol>
+        </div>
+
+        <!-- 2 GIT -->
+        <div class="step">
+          <div class="step-num">2</div>
+          <h3>Git</h3>
+          <p>Git нужен для&nbsp;версионирования&nbsp;— это «история изменений» проекта.</p>
+
+          <table>
+            <tr>
+              <th>OS</th><th>Команда</th>
+            </tr>
+            <tr>
+              <td>macOS</td>
+              <td><code>xcode-select --install</code></td>
+            </tr>
+            <tr>
+              <td>Ubuntu&nbsp;/&nbsp;Debian</td>
+              <td><code>sudo apt update && sudo apt install -y git</code></td>
+            </tr>
+            <tr>
+              <td>Windows</td>
+              <td><a href="https://git-scm.com/download/win" target="_blank" rel="noopener">git-scm.com/download/win</a> → установщик с&nbsp;настройками по&nbsp;умолчанию</td>
+            </tr>
+          </table>
+
+          <p>Один раз настрой автора коммитов:</p>
+          <div class="code-block">
+            <div class="code-block-header"><span>bash</span><span>git config</span></div>
+<pre><code>git config --global user.name "Имя Фамилия"
+git config --global user.email "your.email@aviata.me"</code></pre>
+          </div>
+        </div>
+
+        <!-- 3 CLAUDE -->
+        <div class="step">
+          <div class="step-num">3</div>
+          <h3>Claude Code CLI</h3>
+          <p>Это сам Claude. Лаунчер использует его «под&nbsp;капотом», но&nbsp;для&nbsp;первичной
+          авторизации нужно запустить вручную один раз.</p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span>bash</span><span>установка Claude Code</span></div>
+<pre><code>npm install -g @anthropic-ai/claude-code
+claude --version</code></pre>
+          </div>
+
+          <p>Авторизация:</p>
+          <div class="code-block">
+            <div class="code-block-header"><span>bash</span><span>авторизация</span></div>
+<pre><code>claude
+# в открывшемся интерфейсе набери:
+/login</code></pre>
+          </div>
+
+          <p>Откроется браузер с&nbsp;окном входа Anthropic&nbsp;— войди по&nbsp;рабочей Max-подписке.
+          После входа выйди из&nbsp;Claude (<kbd>Ctrl</kbd>+<kbd>C</kbd> дважды).</p>
+        </div>
+
+        <!-- 4 LAUNCHER -->
+        <div class="step">
+          <div class="step-num">4</div>
+          <h3>Polygon Launcher</h3>
+          <p>Главный инструмент. Скачай последний релиз:</p>
+          <p><a class="btn btn--primary" href="https://github.com/oltoir/polygon-launcher/releases/latest" target="_blank" rel="noopener">↓ Скачать с&nbsp;GitHub Releases</a></p>
+
+          <table>
+            <tr><th>OS</th><th>Файл</th><th>Первый запуск</th></tr>
+            <tr>
+              <td>macOS (Apple Silicon)</td>
+              <td><code>*-arm64.dmg</code></td>
+              <td>Перетянуть в&nbsp;Applications → ПКМ → «Открыть» (обход Gatekeeper)</td>
+            </tr>
+            <tr>
+              <td>macOS (Intel)</td>
+              <td><code>*-x64.dmg</code></td>
+              <td>То&nbsp;же</td>
+            </tr>
+            <tr>
+              <td>Linux</td>
+              <td><code>*.AppImage</code></td>
+              <td><code>chmod +x</code> + двойной клик. Ubuntu&nbsp;22.04+: <code>sudo apt install libfuse2</code></td>
+            </tr>
+            <tr>
+              <td>Windows</td>
+              <td><code>*.exe</code></td>
+              <td>NSIS-инсталлятор, следуй мастеру</td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- 5 CLONE -->
+        <div class="step">
+          <div class="step-num">5</div>
+          <h3>Клонировать полигон</h3>
+          <p>Получи у&nbsp;разработчика URL репозитория. Затем в&nbsp;терминале:</p>
+          <div class="code-block">
+            <div class="code-block-header"><span>bash</span><span>клонирование</span></div>
+<pre><code>mkdir -p ~/Desktop/polygons
+cd ~/Desktop/polygons
+git clone https://github.com/aviata/booking-design-polygon.git</code></pre>
+          </div>
+          <p>Через минуту папка <code>~/Desktop/polygons/booking-design-polygon/</code> появится
+          на&nbsp;компьютере. Запомни этот путь&nbsp;— нужен на&nbsp;следующем шаге.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ LAUNCHER UI ============ -->
+    <section id="launcher">
+      <h2>Первый запуск Polygon Launcher</h2>
+      <p>Открой Polygon Launcher. Первое окно встретит тебя списком полигонов слева.</p>
+
+      <h3>Главное окно</h3>
+      <img class="screenshot" src="./assets/screenshots/01-main-window.png" alt="Главное окно Polygon Launcher">
+      <p class="caption">Главное окно: Sidebar слева, Preview по&nbsp;центру, Чат/Git/Обзор/Логи справа</p>
+
+      <h3>Три зоны лаунчера</h3>
+      <div class="grid grid--3">
+        <div class="card">
+          <h4>📋 Sidebar (слева)</h4>
+          <p>Список полигонов, кнопки «Add Polygon» и&nbsp;«Reload». Иконки рядом показывают
+          статус окружения: зелёная&nbsp;— ок, жёлтая&nbsp;— warning, красная&nbsp;— ошибка.</p>
+        </div>
+        <div class="card">
+          <h4>🖥 Preview (центр)</h4>
+          <p>Браузер с&nbsp;dev-сервером. Сверху&nbsp;— переключатели устройств:
+          Mobile / Tablet / Desktop / Fluid (22&nbsp;пресета девайсов).</p>
+        </div>
+        <div class="card">
+          <h4>💬 Правая панель</h4>
+          <p>Четыре вкладки: <strong>Чат</strong> (с&nbsp;Claude),
+          <strong>Git</strong> (ветки, коммиты), <strong>Логи</strong> (dev-сервер),
+          <strong>Обзор</strong> (статус окружения).</p>
+        </div>
+      </div>
+
+      <h3>Что видно на&nbsp;скриншоте</h3>
+      <ul>
+        <li><strong>Slabar — Sidebar.</strong> Два зарегистрированных полигона: «Aviax Design Polygon» (npm, Node&nbsp;18.18.2) и «Freedom Miniapp Design Polygon» (pnpm, Node&nbsp;≥22). Зелёные индикаторы «Готов к&nbsp;запуску».</li>
+        <li><strong>Центр.</strong> Открыт Aviax. Видна строка «Vue&nbsp;2.7 / npm&nbsp;— конкурс продакшн-стек Aviata», кнопка <strong>Запустить</strong> (синяя, справа сверху), переключатели <strong>Mobile (375) / Tablet (768) / Desktop (1280) / Fluid</strong>.</li>
+        <li><strong>Подсказка в&nbsp;центре.</strong> «Полигон не&nbsp;запущен. Нажми Запустить сверху»&nbsp;— это состояние до&nbsp;первого запуска dev-сервера.</li>
+        <li><strong>Чат справа.</strong> Открыт по&nbsp;умолчанию. Видна подсказка: «Перетащи скриншот в&nbsp;окно или начни вводом. Все плагины, .claude/-настройки и&nbsp;слэш-команды подгружаются автоматически.»</li>
+        <li><strong>Statusbar внизу.</strong> Слева&nbsp;— селектор модели «auto». Справа&nbsp;— индикатор «Backend OK» и&nbsp;иконка уведомлений.</li>
+      </ul>
+
+      <h3>Выбор модели и&nbsp;effort</h3>
+      <p>Внизу окна&nbsp;— статусбар с&nbsp;текущей моделью и&nbsp;уровнем effort.</p>
+      <table>
+        <thead>
+          <tr><th>Модель</th><th>Когда использовать</th><th>Скорость / стоимость</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Sonnet 4.6</strong></td>
+            <td>Основная рабочая лошадка. 95% задач.</td>
+            <td><span class="badge badge--success">баланс</span></td>
+          </tr>
+          <tr>
+            <td><strong>Opus 4.7</strong></td>
+            <td>Сложные компоненты, нестандартные решения.</td>
+            <td><span class="badge badge--warning">дороже, медленнее</span></td>
+          </tr>
+          <tr>
+            <td><strong>Haiku 4.5</strong></td>
+            <td>Мелкие правки (цвет, отступ, переименовать).</td>
+            <td><span class="badge badge--success">быстро, дёшево</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Effort</strong> — насколько глубоко Claude «думает»:</p>
+      <div class="grid grid--3">
+        <div class="card">
+          <strong>low / medium</strong>
+          <p style="margin-top: 4px;">Для типовых задач. <strong>Дефолт.</strong></p>
+        </div>
+        <div class="card">
+          <strong>high / xhigh</strong>
+          <p style="margin-top: 4px;">Когда нужно подумать дольше (сложная архитектура).</p>
+        </div>
+        <div class="card">
+          <strong>max</strong>
+          <p style="margin-top: 4px;">Экстремальные случаи. Долго и&nbsp;дорого.</p>
+        </div>
+      </div>
+
+      <div class="callout callout--info">
+        <span class="callout-icon">💡</span>
+        <div class="callout-body">
+          <p><strong>Дефолт Sonnet 4.6 + medium</strong> покрывает почти всё. Переключайся
+          на&nbsp;другое только если есть конкретная причина.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FIRST COMPONENT ============ -->
+    <section id="first-component">
+      <h2>Первый компонент за&nbsp;30&nbsp;минут</h2>
+      <p>Сценарий&nbsp;— <strong>booking-app</strong>, нужна карточка отеля для&nbsp;списка
+      результатов поиска.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <h3>Создать ветку</h3>
+          <p>Открой Git-панель. Нажми <strong>Create New Branch</strong>. Введи имя:
+          <code>feature/hotel-card</code>. Нажми Create.</p>
+        </div>
+
+        <div class="step">
+          <div class="step-num">2</div>
+          <h3>Запустить slash-команду</h3>
+          <p>Открой Чат. Набери <kbd>/</kbd> &mdash; появится список команд. Выбери
+          <code>/make-template</code>.</p>
+        </div>
+
+        <div class="step">
+          <div class="step-num">3</div>
+          <h3>Фаза 1 — уточнение</h3>
+          <p>Claude задаст вопросы (по&nbsp;очереди или списком). Отвечай развёрнуто:</p>
+          <div class="card">
+            <p><strong>Вопрос:</strong> Что за&nbsp;компонент?<br>
+            <strong>Ответ:</strong> Карточка отеля для&nbsp;списка результатов поиска.</p>
+            <p><strong>Вопрос:</strong> Где он&nbsp;будет жить (FSD-слой и&nbsp;путь)?<br>
+            <strong>Ответ:</strong> widget, путь <code>src/widgets/hotel-card/</code>.</p>
+            <p><strong>Вопрос:</strong> Какие данные показывает?<br>
+            <strong>Ответ:</strong></p>
+            <ul>
+              <li><code>imageUrl: string</code> — главное фото</li>
+              <li><code>name: string</code> — название отеля</li>
+              <li><code>stars: number</code> — звёзды (1–5)</li>
+              <li><code>rating: number</code> — рейтинг (0.0–10.0)</li>
+              <li><code>reviewsCount: number</code> — отзывов</li>
+              <li><code>pricePerNight: number</code> — цена в&nbsp;тенге</li>
+              <li><code>city: string</code> — город</li>
+            </ul>
+            <p><strong>Вопрос:</strong> Состояния?<br>
+            <strong>Ответ:</strong> Default, hover (приподнимается, тень мягче), focus (синяя обводка),
+            selected (синий фон, белый текст).</p>
+            <p><strong>Вопрос:</strong> Адаптивность?<br>
+            <strong>Ответ:</strong> Mobile + Desktop. На&nbsp;мобиле&nbsp;— фото сверху;
+            на&nbsp;десктопе&nbsp;— фото слева.</p>
+          </div>
+          <p>После всех ответов Claude выдаст <strong>summary</strong>. Если всё верно — отвечай:
+          <em>«да, делай»</em>. Если правки — <em>«всё ок, но&nbsp;добавь ещё&nbsp;…»</em>.</p>
+        </div>
+
+        <div class="step">
+          <div class="step-num">4</div>
+          <h3>Фаза 2 — реализация</h3>
+          <p>Появятся permission-диалоги. Нажимай <strong>Always</strong> для&nbsp;операций
+          создания файлов, <strong>Allow once</strong> для&nbsp;bash-команд.</p>
+          <p>Через 1–3&nbsp;минуты появятся файлы:</p>
+          <div class="tree">
+<span class="dir">src/widgets/hotel-card/</span>
+├── <span class="file">HotelCard.tsx</span>
+├── <span class="file">types.ts</span>
+└── <span class="file">index.ts</span></div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">5</div>
+          <h3>Смотри в Preview, итерируй</h3>
+          <p>Переключи устройство в&nbsp;Preview: посмотри на&nbsp;iPhone, потом на&nbsp;Desktop.</p>
+          <p>Пиши обычные правки в&nbsp;чат:</p>
+          <ul>
+            <li>«Увеличь padding снизу до&nbsp;16px»</li>
+            <li>«Сделай тень мягче»</li>
+            <li>«Цена должна быть жирнее и&nbsp;крупнее»</li>
+            <li>«На&nbsp;мобиле название отеля обрезается&nbsp;— добавь truncate в&nbsp;2&nbsp;строки»</li>
+          </ul>
+          <div class="callout callout--success">
+            <span class="callout-icon">🛡</span>
+            <div class="callout-body">
+              <p>Если Claude использовал запрещённый цвет (например <code>text-gray-500</code>) или
+              произвольный spacing (<code>p-[13px]</code>) — сработает hook, операция блокируется,
+              Claude сам переиграет с&nbsp;правильным токеном. Тебе ничего делать не&nbsp;нужно.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">6</div>
+          <h3>Commit + Push</h3>
+          <p>Когда устраивает — открой Git-панель:</p>
+          <ul>
+            <li>В&nbsp;Status — все изменённые файлы.</li>
+            <li>В&nbsp;поле <strong>Commit message</strong>:
+            <code>feat: add HotelCard widget</code>.</li>
+            <li>Нажми <strong>Commit</strong>, потом <strong>Push</strong>.</li>
+          </ul>
+        </div>
+
+        <div class="step">
+          <div class="step-num">7</div>
+          <h3>Open Pull Request</h3>
+          <p>В&nbsp;GitHub-интерфейсе → New Pull Request. В&nbsp;описании:</p>
+          <div class="code-block">
+            <div class="code-block-header"><span>md</span><span>описание PR</span></div>
+<pre><code>## Что сделано
+Новый виджет HotelCard — карточка отеля для списка результатов поиска.
+
+## Скриншоты
+- Mobile (iPhone 15): [перетяни скриншот Preview]
+- Desktop: [перетяни скриншот Preview]
+
+## Ветка
+feature/hotel-card</code></pre>
+          </div>
+          <p>Назначь reviewer'ом разработчика проекта (узнай у&nbsp;тимлида).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CHECKLIST ============ -->
+    <section id="checklist">
+      <h2>Чек-лист перед запросом ревью</h2>
+      <p>Прежде чем нажать «Request Review» в&nbsp;PR&nbsp;— пройдись по&nbsp;списку:</p>
+
+      <div class="card">
+        <ul class="checklist">
+          <li>Компонент выглядит как на&nbsp;Figma-макете (или есть согласованное отклонение)</li>
+          <li>Превью открывается без&nbsp;ошибок (нет белого экрана)</li>
+          <li>Logs-панель не&nbsp;показывает красных строк</li>
+          <li>Все интерактивные состояния проверены: <strong>hover</strong>, <strong>focus</strong>,
+          <strong>disabled</strong>, <strong>loading</strong></li>
+          <li>Адаптивность: переключи Mobile / Tablet / Desktop&nbsp;— нигде не&nbsp;«уезжает»
+          за&nbsp;края, текст не&nbsp;обрезается</li>
+          <li>Закоммитил с&nbsp;осмысленным сообщением
+          (не&nbsp;<code>update</code>, а&nbsp;<code>feat: add HotelCard widget</code>)</li>
+          <li>Запушил в&nbsp;feature-ветку, <strong>не&nbsp;в&nbsp;main</strong>!</li>
+          <li>Открыл PR с&nbsp;описанием и&nbsp;приложенными скриншотами (Mobile + Desktop)</li>
+        </ul>
+      </div>
+
+      <p>Если все галочки — нажимай Request Review. Разработчик пройдётся со&nbsp;своим
+      (более длинным) чек-листом и&nbsp;подскажет, если что-то не&nbsp;так.</p>
+    </section>
+
+    <!-- ============ AI SCOPE ============ -->
+    <section id="ai-scope">
+      <h2>Что ИИ делает за&nbsp;тебя, а&nbsp;что — нет</h2>
+
+      <div class="compare">
+        <div class="compare-col compare-col--yes">
+          <h4>✓ Claude делает</h4>
+          <ul class="compare-list">
+            <li>Пишет JSX / Vue-разметку по&nbsp;описанию или скриншоту</li>
+            <li>Подбирает токены из&nbsp;палитры проекта</li>
+            <li>Расставляет отступы по&nbsp;4px-grid</li>
+            <li>Создаёт структуру файлов (компонент + index.ts + types.ts)</li>
+            <li>Подсказывает имена пропсов, переменных, файлов</li>
+            <li>Рефакторит код по&nbsp;запросу</li>
+            <li>Объясняет любую строчку кода на&nbsp;русском</li>
+            <li>Делает коммиты, пушит, создаёт ветки</li>
+            <li>Воспроизводит макет с&nbsp;Figma-скриншота</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--no">
+          <h4>✕ Claude НЕ делает (работа фронта)</h4>
+          <ul class="compare-list">
+            <li>Подключает API и&nbsp;реальные данные</li>
+            <li>Подключает store (Pinia / Zustand / Redux)</li>
+            <li>Подключает router и&nbsp;навигацию</li>
+            <li>Подключает i18n / переводы</li>
+            <li>Подключает аналитику</li>
+            <li>Делает unit / integration / E2E тесты</li>
+            <li>Решает архитектурные вопросы вне полигона</li>
+            <li>Деплоит в&nbsp;production</li>
+            <li>Оптимизирует перформанс (бандл, hydration)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout callout--info">
+        <span class="callout-icon">📏</span>
+        <div class="callout-body">
+          <p><strong>Правило простое:</strong> задача про <strong>визуал и&nbsp;интеракции</strong> &mdash;
+          твоя зона + Claude. Задача про <strong>данные, логику, связи между частями</strong> &mdash;
+          зона фронта.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SHORTCUTS ============ -->
+    <section id="shortcuts">
+      <h2>Полезные команды и&nbsp;клавиши</h2>
+
+      <h3>Slash-команды в&nbsp;Чате</h3>
+      <table>
+        <thead>
+          <tr><th>Команда</th><th>Что делает</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>/make-template</code></td><td>Новый компонент с&nbsp;нуля (двухфазный workflow)</td></tr>
+          <tr><td><code>/edit-template</code></td><td>Поправить существующий компонент</td></tr>
+          <tr><td><code>/make-from-design</code></td><td>Собрать по&nbsp;Figma-картинке в&nbsp;чате</td></tr>
+          <tr><td><code>/design-review</code></td><td>Попросить Claude отревьюить компонент</td></tr>
+          <tr><td><code>/transfer-component</code></td><td>Портировать компонент из&nbsp;production-проекта</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Горячие клавиши</h3>
+      <table>
+        <tr><td><kbd>Enter</kbd></td><td>Отправить сообщение</td></tr>
+        <tr><td><kbd>Shift</kbd>+<kbd>Enter</kbd></td><td>Перенос строки</td></tr>
+        <tr><td><kbd>Esc</kbd></td><td>Прервать ответ Claude</td></tr>
+        <tr><td>Drag-n-drop картинки в Чат</td><td>Прикрепить изображение (до&nbsp;4&nbsp;шт, по&nbsp;5MB)</td></tr>
+      </table>
+
+      <h3>Полезные приёмы</h3>
+      <div class="grid grid--3">
+        <div class="card">
+          <h4>🖼 Скрин Figma → Чат</h4>
+          <p>Скриншот фрейма (<kbd>⌘</kbd>+<kbd>Shift</kbd>+<kbd>4</kbd> на Mac),
+          перетащи в&nbsp;поле чата. Claude увидит макет.</p>
+        </div>
+        <div class="card">
+          <h4>🔁 Маленькие итерации</h4>
+          <p>«Сделай карточку → теперь увеличь тень → теперь добавь рейтинг»&nbsp;—
+          лучше, чем одно огромное описание.</p>
+        </div>
+        <div class="card">
+          <h4>🗣 Не бойся переспрашивать</h4>
+          <p>«Нет, я&nbsp;имел в&nbsp;виду другое, объясни ещё&nbsp;раз»&nbsp;— это нормально.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TROUBLESHOOT ============ -->
+    <section id="troubleshoot">
+      <h2>Если что-то сломалось</h2>
+
+      <div class="card card--danger">
+        <h4>🔴 Превью не&nbsp;открывается / белый экран</h4>
+        <ol>
+          <li>Открой вкладку <strong>Логи</strong></li>
+          <li>Найди <strong>красные строки</strong> (ERR)</li>
+          <li>Скопируй их и&nbsp;отправь в&nbsp;Чат: «Вот ошибка из&nbsp;dev-сервера: …. Помоги починить»</li>
+          <li>Claude посмотрит и&nbsp;предложит фикс</li>
+        </ol>
+      </div>
+
+      <div class="card card--warning">
+        <h4>🟡 Claude не&nbsp;отвечает / ошибка авторизации</h4>
+        <ol>
+          <li>Открой вкладку <strong>Обзор</strong></li>
+          <li>Проверь строку <strong>Claude auth</strong>&nbsp;— должна быть зелёная галочка</li>
+          <li>Если красный крестик&nbsp;— открой терминал, набери <code>claude /login</code></li>
+          <li>Вернись в&nbsp;лаунчер, нажми «Reload»</li>
+        </ol>
+      </div>
+
+      <div class="card card--success">
+        <h4>🟢 Hook ругается на <code>text-gray-500</code> или <code>p-[13px]</code></h4>
+        <p><strong>Это так и&nbsp;должно быть.</strong> Hook защищает проект от&nbsp;несогласованных стилей.
+        Claude сам перепишет на&nbsp;правильный токен — просто подожди.</p>
+        <p>Если очень-очень нужно исключение — добавь в&nbsp;первую строку файла
+        <code>// claude-allow:tokens</code>. Но&nbsp;лучше согласовать с&nbsp;разработчиком.</p>
+      </div>
+
+      <div class="card">
+        <h4>⚪️ Polygon Launcher не&nbsp;запускается</h4>
+        <ul>
+          <li><strong>macOS:</strong> ПКМ на&nbsp;иконке → «Открыть» (обход Gatekeeper)</li>
+          <li><strong>Linux:</strong> проверь <code>sudo apt install libfuse2</code></li>
+          <li><strong>Windows:</strong> запусти от&nbsp;имени администратора, проверь антивирус</li>
+        </ul>
+      </div>
+
+      <div class="callout callout--info">
+        <span class="callout-icon">✉️</span>
+        <div class="callout-body">
+          <p><strong>Совсем непонятная ошибка</strong> →
+          <a href="https://t.me/oltoir" target="_blank" rel="noopener">Telegram @oltoir</a>.
+          Скриншот ошибки + что делал в&nbsp;момент сбоя.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section id="contact">
+      <h2>Куда писать и&nbsp;кого тегать</h2>
+      <table>
+        <thead>
+          <tr><th>Вопрос</th><th>Куда</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Баги Polygon Launcher, фичреквесты, не&nbsp;работает интерфейс</td>
+            <td><a href="https://t.me/oltoir" target="_blank" rel="noopener">Telegram @oltoir</a></td>
+          </tr>
+          <tr>
+            <td>Правила полигона (можно&nbsp;ли так, почему запрещено)</td>
+            <td>Разработчик-владелец полигона (узнай у&nbsp;тимлида)</td>
+          </tr>
+          <tr>
+            <td>Общие вопросы про подход</td>
+            <td>Авторы: Жансеитов Альтаир, Ескендир Нурсила</td>
+          </tr>
+          <tr>
+            <td>Claude отвечает странно</td>
+            <td>Сначала переформулируй. Если не&nbsp;помогает → @oltoir</td>
+          </tr>
+          <tr>
+            <td>Не понимаешь технический термин</td>
+            <td>Спроси Claude в&nbsp;Чате: «Объясни простыми словами, что такое…»</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout--success">
+        <span class="callout-icon">🚀</span>
+        <div class="callout-body">
+          <p><strong>Помни главное:</strong></p>
+          <ul>
+            <li>Полигон — это <strong>песочница</strong>. Здесь можно ломать и&nbsp;переделывать.
+            На&nbsp;production это не&nbsp;влияет.</li>
+            <li>Claude — это <strong>инструмент</strong>, а&nbsp;не&nbsp;магия. Чем чётче формулируешь —
+            тем лучше результат.</li>
+            <li>Ты не&nbsp;«учишься программировать». Ты&nbsp;учишься <strong>формулировать визуальные
+            требования</strong>. Это новый и&nbsp;крайне востребованный навык в&nbsp;2026.</li>
+          </ul>
+          <p>Удачи. Если что — Telegram <strong>@oltoir</strong>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="footer">
+      <p>
+        <strong>Соседние разделы:</strong>
+        <a href="./index.html">Обзор</a> ·
+        <a href="./developers.html">Гайд для&nbsp;разработчика</a>
+      </p>
+      <p style="margin-top: 16px;">
+        Авторы: Жансеитов Альтаир (фронт) и&nbsp;Ескендир Нурсила (дизайн).
+      </p>
+    </footer>
+
+  </main>
+</div>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">🌙</button>
+
+<script>
+  const root = document.documentElement;
+  const toggle = document.getElementById('themeToggle');
+  const saved = localStorage.getItem('polygon-docs-theme');
+  if (saved) { root.setAttribute('data-theme', saved); toggle.textContent = saved === 'light' ? '☀️' : '🌙'; }
+  toggle.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    root.setAttribute('data-theme', next);
+    toggle.textContent = next === 'light' ? '☀️' : '🌙';
+    localStorage.setItem('polygon-docs-theme', next);
+  });
+</script>
+
+</body>
+</html>

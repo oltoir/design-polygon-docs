@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Гайд для разработчиков — Polygon Docs</title>
+<meta name="description" content="Как фронтенд-разработчику поднять дизайн-полигон под любой проект на базе Claude Code.">
+<link rel="stylesheet" href="./assets/styles.css">
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <a href="./index.html" class="brand">
+      <span class="brand-mark">P</span>
+      <span>Polygon Docs</span>
+    </a>
+
+    <div class="nav-section-title">Разделы</div>
+    <nav class="nav">
+      <a href="./index.html"><span>🌐</span> Обзор</a>
+      <a href="./designers.html"><span>🎨</span> Гайд для дизайнера</a>
+      <a href="./developers.html" class="active"><span>⚙️</span> Гайд для разработчика</a>
+    </nav>
+
+    <div class="nav-section-title">На этой странице</div>
+    <nav class="toc">
+      <a href="#why">Зачем тебе это</a>
+      <a href="#anatomy">Анатомия полигона</a>
+      <a href="#booking">Booking-app: сборка</a>
+      <a href="#step-1" class="toc-h3">↳ Инициализация</a>
+      <a href="#step-2" class="toc-h3">↳ FSD-архитектура</a>
+      <a href="#step-3" class="toc-h3">↳ Дизайн-токены</a>
+      <a href="#step-4" class="toc-h3">↳ .claude — мозг полигона</a>
+      <a href="#step-5" class="toc-h3">↳ CLAUDE.md</a>
+      <a href="#step-6" class="toc-h3">↳ Регистрация в лаунчере</a>
+      <a href="#pipeline">Pipeline и чек-листы</a>
+      <a href="#metrics">Экономия времени</a>
+      <a href="#antipatterns">Антипаттерны</a>
+      <a href="#refs">Референсы</a>
+    </nav>
+
+    <div class="nav-section-title">Контакт</div>
+    <nav class="nav">
+      <a href="https://t.me/oltoir" target="_blank" rel="noopener">
+        <span>✈️</span> Telegram @oltoir
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ============ CONTENT ============ -->
+  <main class="content">
+
+    <section class="hero">
+      <span class="badge">⚙️ Для фронтенд-разработчиков</span>
+      <h1>Поднимаем&nbsp;дизайн-полигон под&nbsp;свой&nbsp;проект</h1>
+      <p class="hero-lead">
+        Универсальная инструкция: поднять полигон под React/Vue/Svelte-проект,
+        настроить <code>.claude</code>-каркас, встроить полигон в&nbsp;pipeline команды.
+        Сквозной пример&nbsp;— <strong>booking-app</strong>.
+      </p>
+    </section>
+
+    <!-- ============ WHY ============ -->
+    <section id="why">
+      <h2>Зачем тебе это</h2>
+      <p>
+        Если ты&nbsp;фронтендер в&nbsp;продуктовой команде, типовой widget забирает 4–8&nbsp;часов:
+        переписать макет из&nbsp;Figma, прописать токены, отступы, состояния, итеративно править после
+        ревью дизайнера. И&nbsp;так десятки раз.
+      </p>
+
+      <div class="grid grid--2">
+        <div class="card card--success">
+          <h4>✅ Что даёт полигон</h4>
+          <ul>
+            <li>Снимает 70% монотонной верстки</li>
+            <li>Один артефакт, один автор верстки</li>
+            <li>Гарантия токенов и&nbsp;spacing на&nbsp;уровне инфраструктуры</li>
+            <li>Время фронта&nbsp;— на&nbsp;логику и&nbsp;архитектуру</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>📋 Что требуется от тебя</h4>
+          <ul>
+            <li>1–2&nbsp;дня на&nbsp;первичную настройку</li>
+            <li>Код-ревью PR из&nbsp;полигона (15–30&nbsp;мин на&nbsp;PR)</li>
+            <li>Перенос верстки в&nbsp;production через Claude</li>
+            <li>Регулярная актуализация <code>.claude/rules</code></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ANATOMY ============ -->
+    <section id="anatomy">
+      <h2>Анатомия дизайн-полигона</h2>
+
+      <h3>Жёсткие границы</h3>
+      <div class="compare">
+        <div class="compare-col compare-col--yes">
+          <h4>✓ Полигон должен</h4>
+          <ul class="compare-list">
+            <li>Повторять структуру боевого проекта (FSD-папки, naming)</li>
+            <li>Использовать тот же стек (React/Vue + TS + Tailwind)</li>
+            <li>Запускаться локально через <code>npm run dev</code></li>
+            <li>Использовать те же дизайн-токены, что и&nbsp;production</li>
+            <li>Иметь <code>.claude/</code> с&nbsp;rules / agents / commands</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--no">
+          <h4>✕ Полигон не должен</h4>
+          <ul class="compare-list">
+            <li>Делать <code>fetch</code>, axios, TanStack Query, useFetch</li>
+            <li>Иметь бизнес-стор (Pinia / Zustand / Redux)</li>
+            <li>Подключать реальный роутер с&nbsp;данными</li>
+            <li>Хранить секреты, env-переменные</li>
+            <li>Использовать дефолтные Tailwind-цвета (<code>text-gray-*</code>)</li>
+            <li>Использовать произвольный spacing (<code>p-[13px]</code>)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout callout--danger">
+        <span class="callout-icon">🛑</span>
+        <div class="callout-body">
+          <p><strong>Это жёсткие правила.</strong> Валидируются через
+          <code>.claude/hooks/check-tokens.py</code> и&nbsp;блокируют операцию Claude,
+          если он&nbsp;их&nbsp;нарушил. Это не&nbsp;«guidelines», это инфраструктура.</p>
+        </div>
+      </div>
+
+      <h3>Связь с&nbsp;production</h3>
+      <p>Полигон&nbsp;— «архитектурный двойник» production:</p>
+
+      <div class="grid grid--2">
+        <div>
+          <strong style="color: var(--brand-primary);">📦 Production</strong>
+          <div class="tree" style="margin-top: 8px;">
+<span class="dir">src/features/search/components/HotelCard/</span>
+├── <span class="file">HotelCard.tsx</span>
+├── <span class="file">HotelCard.test.tsx</span>  <span class="comment"># тест</span>
+├── <span class="file">index.ts</span>
+├── <span class="file">types.ts</span>
+└── <span class="file">useHotelCard.ts</span>  <span class="comment"># API-хук</span>
+          </div>
+        </div>
+        <div>
+          <strong style="color: #f472b6;">🧪 Polygon</strong>
+          <div class="tree" style="margin-top: 8px;">
+<span class="dir">src/widgets/hotel-card/</span>
+├── <span class="file">HotelCard.tsx</span>     <span class="comment"># та же разметка</span>
+│
+├── <span class="file">index.ts</span>          <span class="comment"># тот же экспорт</span>
+├── <span class="file">types.ts</span>          <span class="comment"># те же типы</span>
+<span class="comment"># нет хука — моки в файле</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BOOKING-APP ============ -->
+    <section id="booking">
+      <h2>Сквозной пример: booking-app</h2>
+
+      <div class="card card--accent">
+        <p style="margin: 0;"><strong>Сценарий.</strong>
+        Команда строит booking-app — SPA для&nbsp;бронирования отелей.
+        Production-стек: <strong>React 18 + TypeScript + Vite + Tailwind v3 + Zustand + React Router + TanStack Query.</strong>
+        Нужно поднять полигон <code>booking-design-polygon</code>.</p>
+      </div>
+
+      <p>Пример экстраполируется на&nbsp;любой стек. Vue-вариант отличается только синтаксисом
+      компонентов и&nbsp;зависимостями; структура <code>.claude/</code> и&nbsp;принципы&nbsp;— те&nbsp;же.</p>
+
+      <!-- =========== STEP 1 =========== -->
+      <div class="steps">
+        <div class="step" id="step-1">
+          <div class="step-num">1</div>
+          <h3>Инициализация репозитория</h3>
+          <div class="code-block">
+            <div class="code-block-header"><span>bash</span><span>~/Desktop</span></div>
+<pre><code># 1. Создать репозиторий на GitHub: booking-design-polygon
+
+# 2. Локально:
+cd ~/Desktop
+npm create vite@latest booking-design-polygon -- --template react-ts
+cd booking-design-polygon
+
+# 3. Зафиксировать Node — последнюю LTS:
+nvm install --lts
+nvm use
+node -v > .nvmrc
+
+# 4. Tailwind v3 + PostCSS + Autoprefixer:
+npm install -D tailwindcss@latest postcss autoprefixer
+npx tailwindcss init -p
+
+# 5. State (нужен в полигоне только для UI-состояний, НЕ бизнес-стора):
+npm install zustand
+
+# 6. Подключить к origin:
+git init -b main
+git remote add origin git@github.com:&lt;team&gt;/booking-design-polygon.git
+git add . &amp;&amp; git commit -m "chore: bootstrap polygon"
+git push -u origin main</code></pre>
+          </div>
+          <div class="callout callout--info">
+            <span class="callout-icon">💡</span>
+            <div class="callout-body">
+              <p><strong>Зачем <code>.nvmrc</code>:</strong> Polygon Launcher автоматически
+              подхватит указанную версию Node через&nbsp;<code>nvm</code> при&nbsp;запуске dev-сервера.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- =========== STEP 2 =========== -->
+        <div class="step" id="step-2">
+          <div class="step-num">2</div>
+          <h3>Архитектура: Feature-Sliced Design</h3>
+          <p>Три слоя, направление зависимостей только вниз:</p>
+
+          <div class="fsd-stack">
+            <div class="fsd-layer fsd-layer-1">
+              <span class="fsd-layer-name">pages/</span>
+              <span class="fsd-layer-desc">роуты верхнего уровня, импортит widgets + shared</span>
+            </div>
+            <div class="fsd-arrow">▼</div>
+            <div class="fsd-layer fsd-layer-2">
+              <span class="fsd-layer-name">widgets/</span>
+              <span class="fsd-layer-desc">композитные блоки, импортит только shared</span>
+            </div>
+            <div class="fsd-arrow">▼</div>
+            <div class="fsd-layer fsd-layer-3">
+              <span class="fsd-layer-name">shared/</span>
+              <span class="fsd-layer-desc">примитивы (ui, assets, types), не знает про слои выше</span>
+            </div>
+          </div>
+
+          <p><strong>Структура папок:</strong></p>
+          <div class="tree">
+<span class="dir">src/</span>
+├── <span class="dir">pages/</span>
+│   ├── <span class="dir">search-results/</span>
+│   │   ├── <span class="file">SearchResults.tsx</span>
+│   │   └── <span class="file">index.ts</span>
+│   └── <span class="dir">hotel-details/</span>
+├── <span class="dir">widgets/</span>
+│   ├── <span class="dir">hotel-card/</span>
+│   │   ├── <span class="file">HotelCard.tsx</span>
+│   │   ├── <span class="file">types.ts</span>
+│   │   └── <span class="file">index.ts</span>      <span class="comment"># обязательный экспорт</span>
+│   └── <span class="dir">search-bar/</span>
+├── <span class="dir">shared/</span>
+│   ├── <span class="dir">ui/</span>          <span class="comment"># Button, Input, Badge</span>
+│   ├── <span class="dir">assets/</span>      <span class="comment"># SVG, изображения</span>
+│   ├── <span class="dir">css/</span>
+│   │   └── <span class="file">tokens.css</span>   <span class="comment"># CSS-переменные</span>
+│   └── <span class="file">types.ts</span>
+├── <span class="file">App.tsx</span>
+└── <span class="file">main.tsx</span></div>
+
+          <div class="callout callout--warning">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-body">
+              <p><strong>Правило <code>index.ts</code>:</strong> у&nbsp;каждого компонента
+              рядом обязателен <code>index.ts</code> с&nbsp;явным экспортом. Это валидируется
+              hook'ом&nbsp;— если файла нет, операция Claude блокируется.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- =========== STEP 3 =========== -->
+        <div class="step" id="step-3">
+          <div class="step-num">3</div>
+          <h3>Дизайн-токены: только свои цвета и&nbsp;4px-grid</h3>
+
+          <p><strong><code>src/shared/css/tokens.css</code></strong> — RGB-триплеты для&nbsp;alpha-композиции:</p>
+          <div class="code-block">
+            <div class="code-block-header"><span>css</span><span>tokens.css</span></div>
+<pre><code>:root {
+  --text-neutral-primary: 24 28 33;
+  --text-neutral-secondary: 91 99 108;
+  --background-neutral-primary: 255 255 255;
+  --background-neutral-secondary: 246 247 249;
+  --background-brand-primary: 0 102 255;
+  --border-neutral: 224 227 231;
+  --border-focus: 0 102 255;
+}
+
+.dark {
+  --text-neutral-primary: 240 243 247;
+  --background-neutral-primary: 12 16 20;
+  --background-neutral-secondary: 22 27 33;
+}</code></pre>
+          </div>
+
+          <p><strong><code>tailwind.config.ts</code></strong> — заменяем (НЕ extend) дефолтную палитру:</p>
+          <div class="code-block">
+            <div class="code-block-header"><span>ts</span><span>tailwind.config.ts</span></div>
+<pre><code>const rgb = (v) =&gt; `rgb(var(--${v}) / &lt;alpha-value&gt;)`;
+
+export default {
+  content: ['./index.html', './src/**/*.{ts,tsx}'],
+  darkMode: 'class',
+  theme: {
+    // ВАЖНО: theme, не extend — это убирает дефолтные text-gray-*, bg-white
+    colors: {
+      transparent: 'transparent',
+      text: {
+        'neutral-primary': rgb('text-neutral-primary'),
+        'neutral-secondary': rgb('text-neutral-secondary'),
+      },
+      background: {
+        'neutral-primary': rgb('background-neutral-primary'),
+        'brand-primary': rgb('background-brand-primary'),
+      },
+      // …
+    },
+    // Spacing — только 4px-grid
+    spacing: {
+      0: '0px', 1: '4px', 2: '8px', 3: '12px', 4: '16px',
+      5: '20px', 6: '24px', 8: '32px', 10: '40px',
+      12: '48px', 16: '64px', 20: '80px',
+    },
+  },
+};</code></pre>
+          </div>
+
+          <div class="callout callout--success">
+            <span class="callout-icon">🎯</span>
+            <div class="callout-body">
+              <p><strong>Результат:</strong> <code>text-gray-500</code> вызывает ошибку Tailwind
+              на&nbsp;этапе сборки — класс не&nbsp;существует. Плюс hook блокирует операцию
+              ещё&nbsp;до&nbsp;сохранения файла.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- =========== STEP 4 — .claude/ =========== -->
+        <div class="step" id="step-4">
+          <div class="step-num">4</div>
+          <h3><code>.claude/</code> — мозг полигона</h3>
+          <p>Без правильного <code>.claude/</code>-каркаса полигон не&nbsp;работает: Claude не&nbsp;знает
+          ваших правил и&nbsp;пишет «как привык»&nbsp;— с&nbsp;дефолтными Tailwind-цветами, без&nbsp;<code>index.ts</code>.</p>
+
+          <!-- .claude visual map -->
+          <svg viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; margin: 16px 0;">
+            <defs>
+              <linearGradient id="claudeBox" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#5b8def" stop-opacity="0.12"/>
+                <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.04"/>
+              </linearGradient>
+            </defs>
+
+            <rect x="20" y="20" width="760" height="340" rx="12" fill="url(#claudeBox)" stroke="#283242"/>
+            <text x="40" y="48" fill="#5b8def" font-size="16" font-weight="700" font-family="JetBrains Mono, monospace">.claude/</text>
+
+            <!-- rules -->
+            <g>
+              <rect x="40" y="68" width="220" height="120" rx="8" fill="#161c27" stroke="#1f2937"/>
+              <text x="56" y="92" fill="#e6edf3" font-size="13" font-weight="600" font-family="Inter, sans-serif">📜 rules/</text>
+              <text x="56" y="112" fill="#9aa4b2" font-size="11" font-family="Inter, sans-serif">code-style.md</text>
+              <text x="56" y="128" fill="#9aa4b2" font-size="11" font-family="Inter, sans-serif">spacing-system.md</text>
+              <text x="56" y="144" fill="#9aa4b2" font-size="11" font-family="Inter, sans-serif">fsd-architecture.md</text>
+              <text x="56" y="160" fill="#9aa4b2" font-size="11" font-family="Inter, sans-serif">git-workflow.md</text>
+              <text x="56" y="176" fill="#9aa4b2" font-size="11" font-family="Inter, sans-serif">designer-ai.md</text>
+            </g>
+
+            <!-- agents -->
+            <g>
+              <rect x="280" y="68" width="220" height="120" rx="8" fill="#161c27" stroke="#1f2937"/>
+              <text x="296" y="92" fill="#e6edf3" font-size="13" font-weight="600" font-family="Inter, sans-serif">🤖 agents/</text>
+              <text x="296" y="112" fill="#9aa4b2" font-size="11" font-family="Inter, sans-serif">design-creator.md</text>
+              <text x="296" y="128" fill="#9aa4b2" font-size="11" font-family="Inter, sans-serif">design-editor.md</text>
+              <text x="296" y="144" fill="#9aa4b2" font-size="11" font-family="Inter, sans-serif">design-reviewer.md</text>
+              <text x="296" y="172" fill="#6e7787" font-size="10" font-family="Inter, sans-serif">три специалиста с зашитой ролью</text>
+            </g>
+
+            <!-- commands -->
+            <g>
+              <rect x="520" y="68" width="240" height="120" rx="8" fill="#161c27" stroke="#1f2937"/>
+              <text x="536" y="92" fill="#e6edf3" font-size="13" font-weight="600" font-family="Inter, sans-serif">⚡ commands/</text>
+              <text x="536" y="112" fill="#9aa4b2" font-size="11" font-family="JetBrains Mono, monospace">/make-template</text>
+              <text x="536" y="128" fill="#9aa4b2" font-size="11" font-family="JetBrains Mono, monospace">/edit-template</text>
+              <text x="536" y="144" fill="#9aa4b2" font-size="11" font-family="JetBrains Mono, monospace">/make-from-design</text>
+              <text x="536" y="160" fill="#9aa4b2" font-size="11" font-family="JetBrains Mono, monospace">/design-review</text>
+              <text x="536" y="176" fill="#9aa4b2" font-size="11" font-family="JetBrains Mono, monospace">/transfer-component</text>
+            </g>
+
+            <!-- hooks -->
+            <g>
+              <rect x="40" y="200" width="220" height="140" rx="8" fill="#161c27" stroke="#f87171" stroke-width="1.5"/>
+              <text x="56" y="224" fill="#f87171" font-size="13" font-weight="600" font-family="Inter, sans-serif">🛑 hooks/</text>
+              <text x="56" y="244" fill="#9aa4b2" font-size="11" font-family="JetBrains Mono, monospace">check-tokens.py</text>
+              <text x="56" y="264" fill="#6e7787" font-size="10" font-family="Inter, sans-serif">PostToolUse hook:</text>
+              <text x="56" y="278" fill="#6e7787" font-size="10" font-family="Inter, sans-serif">exit 2 блокирует операцию,</text>
+              <text x="56" y="292" fill="#6e7787" font-size="10" font-family="Inter, sans-serif">если найден text-gray-*,</text>
+              <text x="56" y="306" fill="#6e7787" font-size="10" font-family="Inter, sans-serif">bg-white, p-[NNpx]</text>
+              <text x="56" y="320" fill="#6e7787" font-size="10" font-family="Inter, sans-serif">или нет index.ts.</text>
+            </g>
+
+            <!-- decisions -->
+            <g>
+              <rect x="280" y="200" width="220" height="140" rx="8" fill="#161c27" stroke="#1f2937"/>
+              <text x="296" y="224" fill="#e6edf3" font-size="13" font-weight="600" font-family="Inter, sans-serif">📋 decisions/</text>
+              <text x="296" y="244" fill="#9aa4b2" font-size="11" font-family="Inter, sans-serif">TEMPLATE.md</text>
+              <text x="296" y="262" fill="#9aa4b2" font-size="11" font-family="Inter, sans-serif">0001-tailwind-tokens-only</text>
+              <text x="296" y="280" fill="#9aa4b2" font-size="11" font-family="Inter, sans-serif">0002-spacing-4px-scale</text>
+              <text x="296" y="298" fill="#9aa4b2" font-size="11" font-family="Inter, sans-serif">0003-no-business-logic</text>
+              <text x="296" y="320" fill="#6e7787" font-size="10" font-family="Inter, sans-serif">ADR — закрывают споры</text>
+            </g>
+
+            <!-- docs + scripts -->
+            <g>
+              <rect x="520" y="200" width="240" height="140" rx="8" fill="#161c27" stroke="#1f2937"/>
+              <text x="536" y="224" fill="#e6edf3" font-size="13" font-weight="600" font-family="Inter, sans-serif">📚 docs/ &amp; scripts/</text>
+              <text x="536" y="244" fill="#9aa4b2" font-size="11" font-family="Inter, sans-serif">components-map.md</text>
+              <text x="536" y="262" fill="#9aa4b2" font-size="11" font-family="Inter, sans-serif">routes-map.md</text>
+              <text x="536" y="280" fill="#9aa4b2" font-size="11" font-family="Inter, sans-serif">_state.md (auto)</text>
+              <text x="536" y="298" fill="#9aa4b2" font-size="11" font-family="JetBrains Mono, monospace">scripts/build-state.mjs</text>
+              <text x="536" y="320" fill="#6e7787" font-size="10" font-family="Inter, sans-serif">реестр + автогенерация</text>
+            </g>
+          </svg>
+
+          <h4>Файл <code>.claude/hooks/check-tokens.py</code></h4>
+          <p>Это сердце валидации. PostToolUse-hook: после каждого Edit/Write регексами ищет
+          запрещённые конструкции → exit&nbsp;code&nbsp;2 блокирует операцию.</p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span>python</span><span>.claude/hooks/check-tokens.py</span></div>
+<pre><code>#!/usr/bin/env python3
+import json, os, re, sys
+
+FORBIDDEN_COLORS = [
+    r'\btext-gray-\d+\b', r'\bbg-gray-\d+\b',
+    r'\bbg-white\b', r'\bbg-black\b',
+    r'\btext-white\b', r'\btext-black\b',
+    r'\b(text|bg|border)-(red|blue|green|yellow|purple|pink)-\d+\b',
+]
+ARBITRARY_SPACING = re.compile(r'\b[pm][trblxy]?-\[\d+(?:\.\d+)?px\]')
+
+def main():
+    payload = json.load(sys.stdin)
+    if payload.get('tool_name') not in ('Edit', 'Write', 'MultiEdit'):
+        return 0
+    file_path = payload.get('tool_input', {}).get('file_path', '')
+    if not file_path or not file_path.endswith(('.tsx', '.ts', '.vue')):
+        return 0
+
+    with open(file_path) as f: content = f.read()
+    if 'claude-allow:tokens' in content.splitlines()[0:1]: return 0
+
+    violations = []
+    for pat in FORBIDDEN_COLORS:
+        for m in re.finditer(pat, content):
+            line = content[:m.start()].count('\n') + 1
+            violations.append(f'  L{line}: запрещённый цвет «{m.group()}»')
+    for m in ARBITRARY_SPACING.finditer(content):
+        line = content[:m.start()].count('\n') + 1
+        violations.append(f'  L{line}: произвольный spacing «{m.group()}»')
+
+    # + проверка index.ts рядом с компонентом
+    # …
+
+    if violations:
+        print('❌ check-tokens.py: нарушения правил полигона:', file=sys.stderr)
+        for v in violations: print(v, file=sys.stderr)
+        sys.exit(2)
+
+if __name__ == '__main__': main()</code></pre>
+          </div>
+
+          <p>Регистрация в&nbsp;<code>.claude/settings.json</code>:</p>
+          <div class="code-block">
+            <div class="code-block-header"><span>json</span><span>.claude/settings.json</span></div>
+<pre><code>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          { "type": "command", "command": ".claude/hooks/check-tokens.py" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+          </div>
+
+          <h4>Slash-команда <code>/make-template</code></h4>
+          <p>Двухфазный workflow: <strong>уточнение → реализация</strong>. Фаза&nbsp;1 жёстко блокирует
+          написание кода, пока дизайнер не&nbsp;подтвердил summary.</p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span>md</span><span>.claude/commands/make-template.md</span></div>
+<pre><code>---
+description: Создать новый компонент с нуля в полигоне.
+---
+
+# /make-template
+
+Используй агента design-creator.
+
+## Фаза 1 — Уточнение (ОБЯЗАТЕЛЬНО)
+Задай дизайнеру по очереди:
+1. Название и назначение
+2. Где живёт (FSD-слой и путь)
+3. Данные (поля, типы)
+4. Состояния (hover, focus, disabled, loading)
+5. Адаптивность (mobile / tablet / desktop)
+6. Картинка макета — есть ли? Если нет — попроси прикрепить
+
+После всех ответов выдай summary и спроси: «Готов начать? [да / правки]».
+
+ЖЁСТКО: НЕ пиши код, пока дизайнер не подтвердил summary.
+
+## Фаза 2 — Реализация
+1. Git: создай ветку feature/&lt;slug&gt;
+2. Assets: запроси SVG/изображения если нужно
+3. FSD-слой: определи и создай папку
+4. Naming: PascalCase-файл, kebab-case-папка
+5. Файлы: Component.tsx + types.ts + index.ts
+6. Стили: только токены, только 4px-grid
+7. Build: npm run build — должно быть зелёным
+8. Components-map: добавь строку в docs/components-map.md</code></pre>
+          </div>
+
+          <p style="margin-top: 16px;">Аналогично организованы остальные команды и&nbsp;агенты —
+          смотри референсы внизу страницы.</p>
+        </div>
+
+        <!-- =========== STEP 5 =========== -->
+        <div class="step" id="step-5">
+          <div class="step-num">5</div>
+          <h3><code>CLAUDE.md</code> в&nbsp;корне полигона</h3>
+          <p>Короткий summary, <strong>лимит 80 строк</strong>. Детали — в&nbsp;<code>.claude/rules/*</code>.</p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span>md</span><span>CLAUDE.md</span></div>
+<pre><code># Booking Design Polygon
+
+Дизайн-полигон для booking-app. Только верстка по моковым данным.
+НЕТ API, store, router-логики.
+
+## Стек
+React 18 + TypeScript + Vite + Tailwind v3 + Zustand (только UI-стейт)
+
+## Команды
+- npm install — установить зависимости
+- npm run dev — запустить локально (порт 5173)
+- npm run build — сборка прода
+- npm run lint — eslint
+
+## Архитектура (FSD)
+pages/ → widgets/ → shared/  (только вниз, без обратных импортов)
+Каждый компонент имеет рядом index.ts.
+
+## Правила (детали — в .claude/rules/)
+- code-style.md — синтаксис, моковые данные (kz/ru)
+- spacing-system.md — только 4px-grid
+- fsd-architecture.md — направления зависимостей
+- designer-ai.md — двухфазный workflow Claude
+
+## Slash-команды (.claude/commands/)
+- /make-template — новый компонент с нуля
+- /edit-template — править существующий
+- /make-from-design — собрать по Figma-картинке
+- /design-review — визуальное ревью
+
+## Hooks
+.claude/hooks/check-tokens.py — блокирует дефолтные Tailwind-цвета
+и произвольный spacing.
+
+## Контакты
+Polygon Launcher / баги инфраструктуры: Telegram @oltoir</code></pre>
+          </div>
+        </div>
+
+        <!-- =========== STEP 6 =========== -->
+        <div class="step" id="step-6">
+          <div class="step-num">6</div>
+          <h3>Регистрация полигона в&nbsp;Polygon Launcher</h3>
+
+          <div class="grid grid--2">
+            <div class="card">
+              <h4>🅰️ Через UI (если доступно)</h4>
+              <p>В&nbsp;лаунчере → Sidebar → кнопка <strong>«Add Polygon»</strong> →
+              указать путь к&nbsp;локальной копии репозитория.</p>
+              <p>Лаунчер сам определит package-manager по&nbsp;lockfile
+              (<code>package-lock.json</code>&nbsp;→&nbsp;npm, <code>pnpm-lock.yaml</code>&nbsp;→&nbsp;pnpm)
+              и&nbsp;Node-версию по&nbsp;<code>.nvmrc</code>.</p>
+            </div>
+            <div class="card">
+              <h4>🅱️ Через preset-файл (MVP)</h4>
+              <p>Создать <code>presets/booking.json</code>, добавить в&nbsp;<code>PRESET_FILES</code>
+              в&nbsp;<code>src/main/polygons/registry.ts</code>, пересобрать лаунчер.</p>
+            </div>
+          </div>
+
+          <div class="code-block">
+            <div class="code-block-header"><span>json</span><span>polygon-launcher/presets/booking.json</span></div>
+<pre><code>{
+  "id": "booking",
+  "displayName": "Booking App Polygon",
+  "description": "Полигон для booking-app — React + TS + Tailwind",
+  "packageManager": "npm",
+  "nodeVersion": "&gt;=22",
+  "installCmd": ["install"],
+  "devCmd": ["run", "dev"],
+  "defaultPort": 5173,
+  "defaultPath": "~/Desktop/booking-design-polygon",
+  "builtin": true
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PIPELINE ============ -->
+    <section id="pipeline">
+      <h2>Pipeline передачи верстки полигон&nbsp;→&nbsp;production</h2>
+
+      <h3>Этап&nbsp;A: дизайнер делает PR</h3>
+      <p>Дизайнер собирает компонент через лаунчер, коммитит в&nbsp;feature-ветку, открывает PR.
+      Подробности&nbsp;— в&nbsp;<a href="./designers.html">гайде для&nbsp;дизайнера</a>.</p>
+
+      <h3>Этап&nbsp;B: код-ревью PR в&nbsp;полигоне</h3>
+      <div class="card">
+        <h4>📋 Чек-лист код-ревью</h4>
+        <ul class="checklist">
+          <li>FSD-зависимости не&nbsp;нарушены (нет импорта <code>widgets/</code>&nbsp;→&nbsp;<code>shared/</code>)</li>
+          <li>Только дизайн-токены (нет <code>text-gray-*</code>, <code>bg-white</code>)</li>
+          <li>Spacing кратен 4px (нет <code>p-[13px]</code>)</li>
+          <li>У компонента есть рядом <code>index.ts</code></li>
+          <li>Нет API-вызовов: <code>fetch(</code>, <code>axios.</code>, <code>useQuery(</code></li>
+          <li>Нет store/router-вызовов: <code>useStore</code>, <code>useRouter</code>, <code>navigate(</code></li>
+          <li>Моковые данные локализованные (нужный контекст команды)</li>
+          <li>Компонент в&nbsp;<code>components-map.md</code> со&nbsp;статусом</li>
+          <li>Скриншот превью приложен к&nbsp;PR (Mobile + Desktop)</li>
+          <li><code>npm run lint</code> и&nbsp;<code>npm run build</code> зелёные</li>
+          <li>Семантика: <code>&lt;button&gt;</code>, не&nbsp;<code>&lt;div onClick&gt;</code></li>
+          <li>Все интерактивные состояния отрабатывают (hover, focus-visible, disabled)</li>
+          <li>Нет <code>console.log</code>, debug-кода</li>
+        </ul>
+      </div>
+
+      <h3>Этап&nbsp;C: мерж в&nbsp;<code>main</code> полигона</h3>
+      <p>После прохождения чек-листа&nbsp;— squash-merge. Можно включить branch protection
+      в&nbsp;GitHub: требовать минимум одно approve и&nbsp;зелёные чеки.</p>
+
+      <h3>Этап&nbsp;D: перенос в&nbsp;production через Claude</h3>
+      <p>Открываешь production-репо в&nbsp;Claude Code и&nbsp;даёшь промпт вида:</p>
+      <div class="code-block">
+        <div class="code-block-header"><span>prompt</span><span>пример</span></div>
+<pre><code>Перенеси компонент HotelCard из
+~/Desktop/booking-design-polygon/src/widgets/hotel-card/
+в наш production-репо
+~/Desktop/booking-app/src/features/search/components/HotelCard/.
+
+Конвенции production:
+- Структура: feature-based (features/search/components/HotelCard/)
+- Стор: Zustand, useSearchStore. Карточка получает hotel из родителя через пропс
+- Данные приходят через TanStack Query useHotelsQuery в родительской HotelsList
+- Токены: те же, что в полигоне (синхронизируем через packages/tokens)
+- i18n: react-i18next, ключи в src/locales/ru.json под namespace search.hotelCard
+- Тесты: vitest + @testing-library/react, smoke-тест на рендер
+
+Что нужно:
+1. Создать HotelCard.tsx, перенести разметку 1:1
+2. Заменить моки на типизированный пропс hotel: Hotel из shared/types
+3. Текст → t() вызовы, ключи в locales
+4. Создать index.ts с экспортом
+5. Создать HotelCard.test.tsx
+
+НЕ нужно:
+- НЕ добавлять API-вызовы внутрь карточки
+- НЕ менять токены и spacing
+- НЕ заводить store внутри компонента</code></pre>
+      </div>
+
+      <div class="card">
+        <h4>📋 Чек-лист переноса в production</h4>
+        <ul class="checklist">
+          <li>Структура папок&nbsp;— production, не&nbsp;полигонная</li>
+          <li>API-вызовы добавлены (или вынесены в&nbsp;родителя)</li>
+          <li>Моки удалены</li>
+          <li>Store / router / контекст подключены</li>
+          <li>i18n-ключи заведены</li>
+          <li>Тесты добавлены (минимум smoke-render)</li>
+          <li>Сборка production зелёная</li>
+          <li>Запущено локально на&nbsp;dev-данных, проверено визуально</li>
+          <li>Линтер production зелёный</li>
+          <li>Аналитика подключена (если есть)</li>
+        </ul>
+      </div>
+
+      <h3>Этап&nbsp;E: PR в&nbsp;production-репо</h3>
+      <p>Стандартный процесс команды&nbsp;→ ревью&nbsp;→ мерж&nbsp;→ деплой.</p>
+    </section>
+
+    <!-- ============ METRICS ============ -->
+    <section id="metrics">
+      <h2>Сколько это экономит</h2>
+      <div class="grid grid--3">
+        <div class="stat">
+          <div class="stat-value">6×</div>
+          <div class="stat-label">средняя карточка вместо 6&nbsp;часов&nbsp;— 1&nbsp;ч&nbsp;20&nbsp;мин</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">4×</div>
+          <div class="stat-label">форма поиска вместо 8&nbsp;часов&nbsp;— 2&nbsp;часа</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">3×</div>
+          <div class="stat-label">попап вместо 3&nbsp;часов&nbsp;— 55&nbsp;минут</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ANTIPATTERNS ============ -->
+    <section id="antipatterns">
+      <h2>Антипаттерны и&nbsp;грабли</h2>
+
+      <div class="compare">
+        <div class="compare-col compare-col--no">
+          <h4>✕ НЕ делать</h4>
+          <ul class="compare-list">
+            <li>Авто-подтверждать все tool-use Claude (давай Allow once для&nbsp;bash)</li>
+            <li>Позволять полигону отращивать бизнес-логику — это убьёт песочницу</li>
+            <li>Делать огромные <code>CLAUDE.md</code> (&gt;80 строк) — Claude хуже их&nbsp;использует</li>
+            <li>Переносить полигонную верстку 1:1 без&nbsp;адаптации к&nbsp;production-структуре</li>
+            <li>Игнорировать ревью — путь к&nbsp;энтропии</li>
+            <li>Использовать одну сессию чата для&nbsp;разных компонентов</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--yes">
+          <h4>✓ Обязательно делать</h4>
+          <ul class="compare-list">
+            <li>Синхронизировать токены полигона и&nbsp;production (один источник правды)</li>
+            <li>Раз в&nbsp;спринт чистить полигон от&nbsp;deprecated-компонентов</li>
+            <li>Тренировать дизайнеров первые 1–2&nbsp;недели — это инвестиция</li>
+            <li>Документировать ADR — защита от&nbsp;«а&nbsp;давайте теперь иначе» через&nbsp;год</li>
+            <li>Делать ревью каждого PR, особенно первый месяц</li>
+            <li>Каждый компонент в&nbsp;своей feature-ветке + свежий чат</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ REFS ============ -->
+    <section id="refs">
+      <h2>Референсы и&nbsp;материалы</h2>
+
+      <h3>Живые полигоны Aviata</h3>
+      <div class="grid grid--2">
+        <div class="card">
+          <h4>aviax-design-polygon</h4>
+          <p><strong>Vue 2.7 + npm + Node&nbsp;18.</strong> Базовый паттерн: 1&nbsp;агент, 6&nbsp;команд,
+          без&nbsp;hooks. Пример «полигон на&nbsp;минималках».</p>
+          <code style="font-size: 11px;">~/Desktop/main/aviax-design-polygon/</code>
+        </div>
+        <div class="card">
+          <h4>freedom-miniapp-design-polygon</h4>
+          <p><strong>Vue 3.5 + pnpm + Node&nbsp;22+.</strong> Зрелый паттерн:
+          3&nbsp;специализированных агента, Python-hooks, ADR, авто-генерация состояния.</p>
+          <code style="font-size: 11px;">~/Desktop/main/freedom-miniapp-design-polygon/</code>
+        </div>
+      </div>
+
+      <h3>Polygon Launcher</h3>
+      <ul>
+        <li><code>polygon-launcher/README.md</code> — установка, dev, релиз</li>
+        <li><code>polygon-launcher/CLAUDE.md</code> — интеграция с&nbsp;Claude Agent SDK, pitfalls</li>
+        <li><code>polygon-launcher/presets/*.json</code> — образцы preset-файлов</li>
+        <li><code>polygon-launcher/src/main/polygons/registry.ts</code> — регистрация preset</li>
+        <li><code>polygon-launcher/src/shared/types.ts</code> — формат <code>PolygonPreset</code></li>
+      </ul>
+
+      <h3>Внешние</h3>
+      <ul>
+        <li><a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code documentation</a></li>
+        <li><a href="https://feature-sliced.design/" target="_blank" rel="noopener">Feature-Sliced Design</a></li>
+        <li><a href="https://tailwindcss.com/docs" target="_blank" rel="noopener">Tailwind CSS v3</a></li>
+      </ul>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="footer">
+      <p>
+        <strong>Соседние разделы:</strong>
+        <a href="./index.html">Обзор</a> ·
+        <a href="./designers.html">Гайд для&nbsp;дизайнера</a>
+      </p>
+      <p style="margin-top: 16px;">
+        Авторы формата: <strong>Жансеитов Альтаир</strong> (фронт) и&nbsp;<strong>Ескендир Нурсила</strong> (дизайн).
+      </p>
+      <p style="margin-top: 8px;">
+        🐞 Баг в&nbsp;Polygon Launcher, вопрос по&nbsp;<code>.claude/</code>-инфраструктуре или&nbsp;<strong>нужны исходники лаунчера</strong> для&nbsp;форка / контрибьюта&nbsp;— пиши
+        <a href="https://t.me/oltoir" target="_blank" rel="noopener"><strong>Telegram @oltoir</strong></a>.
+      </p>
+    </footer>
+
+  </main>
+</div>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">🌙</button>
+
+<script>
+  const root = document.documentElement;
+  const toggle = document.getElementById('themeToggle');
+  const saved = localStorage.getItem('polygon-docs-theme');
+  if (saved) { root.setAttribute('data-theme', saved); toggle.textContent = saved === 'light' ? '☀️' : '🌙'; }
+  toggle.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    root.setAttribute('data-theme', next);
+    toggle.textContent = next === 'light' ? '☀️' : '🌙';
+    localStorage.setItem('polygon-docs-theme', next);
+  });
+</script>
+
+</body>
+</html>
