@@ -793,6 +793,87 @@ img.screenshot {
 .theme-toggle:hover { background: var(--bg-card-hover); }
 
 /* ============================================================
+   Mobile refinements (tablets & phones)
+   ============================================================ */
+@media (max-width: 600px) {
+  :root {
+    --fs-4xl: 30px;
+    --fs-3xl: 24px;
+    --fs-2xl: 20px;
+    --fs-xl: 18px;
+  }
+
+  body { font-size: 15px; line-height: 1.55; }
+
+  .content { padding: var(--space-5) var(--space-4); }
+
+  .sidebar { padding: var(--space-4); }
+
+  h2 { margin-top: var(--space-8); }
+
+  .hero { padding: var(--space-10) var(--space-4); }
+  .hero h1 { font-size: clamp(26px, 7vw, 36px); }
+  .hero-lead { font-size: var(--fs-base); }
+
+  /* Tables: horizontal scroll instead of squashing */
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+
+  /* Inline code: prevent overflow with long tokens */
+  code { word-break: break-word; }
+  pre { font-size: 12px; padding: var(--space-3); }
+
+  /* Pipeline: keep horizontal scroll, hint with snap */
+  .pipeline { scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+  .pipeline-step { scroll-snap-align: start; min-width: 75%; }
+  .pipeline-step::after { display: none; }
+
+  /* FSD layers stack vertically */
+  .fsd-layer { flex-direction: column; align-items: flex-start; gap: var(--space-1); }
+
+  /* Steps: shrink padding so circle stays inside viewport */
+  .steps { padding-left: var(--space-8); }
+  .steps::before { left: 13px; }
+  .step-num { left: calc(-1 * var(--space-8)); width: 28px; height: 28px; font-size: var(--fs-xs); }
+
+  /* Cards & callouts: tighter padding */
+  .card { padding: var(--space-4); }
+  .callout { padding: var(--space-3) var(--space-4); }
+
+  /* Stats: smaller value */
+  .stat-value { font-size: var(--fs-3xl); }
+
+  /* Buttons: full-width touch targets */
+  .btn { padding: var(--space-3) var(--space-4); min-height: 44px; }
+
+  /* Nav links: bigger touch target */
+  .nav a { padding: var(--space-3); min-height: 44px; }
+
+  /* Theme toggle: don't crowd thumb zone */
+  .theme-toggle { bottom: var(--space-3); right: var(--space-3); width: 40px; height: 40px; }
+
+  /* Screenshots: lighter shadow on mobile */
+  img.screenshot { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); }
+
+  /* Footer authors: stack */
+  .footer-authors { flex-direction: column; gap: var(--space-3); }
+}
+
+@media (max-width: 380px) {
+  .content { padding: var(--space-4) var(--space-3); }
+  .hero { padding: var(--space-8) var(--space-3); margin-left: calc(-1 * var(--space-3)); margin-right: calc(-1 * var(--space-3)); }
+  .stat { padding: var(--space-4); }
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
    Print
    ============================================================ */
 @media print {
